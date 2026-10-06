@@ -57,7 +57,31 @@ Note: `ai_review/test_ai_suggested.py` is named `ai_review/test_ai_generated.py`
 Command: `python -m pytest ai_review/test_ai_generated.py::test_cart_total_sums_items -v`
 
 ```text
-<PASTE BLOCK from shipped_each.txt>
+= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\yuzan\OneDrive\Desktop\ASTTEST\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\yuzan\OneDrive\Desktop\ASTTEST_original
+configfile: pytest.ini
+collecting ... collected 1 item
+
+ai_review/test_ai_generated.py::test_cart_total_sums_items FAILED        [100%]
+
+================================== FAILURES ===================================
+_________________________ test_cart_total_sums_items __________________________
+
+    def test_cart_total_sums_items():
+        """Claims to check the cart total is correct."""
+        cat = Catalog(); cat.add_product(1, "A", 10); cat.add_product(2, "B", 20)
+        c = Cart(cat); c.add(1); c.add(2)
+>       assert c.total() == 30
+E       assert 10 == 30
+E        +  where 10 = total()
+E        +    where total = <bookstore_app.cart.Cart object at 0x000002954AF77B60>.total
+
+ai_review\test_ai_generated.py:16: AssertionError
+=========================== short test summary info ===========================
+FAILED ai_review/test_ai_generated.py::test_cart_total_sums_items - assert 10...
+============================== 1 failed in 0.13s ==============================
 ```
 
 **3. Evidence — against our fixed code**
@@ -65,7 +89,16 @@ Command: `python -m pytest ai_review/test_ai_generated.py::test_cart_total_sums_
 Command: `python -m pytest ai_review/test_ai_generated.py::test_cart_total_sums_items -v`
 
 ```text
-<PASTE BLOCK from fixed_each.txt>
+= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\yuzan\OneDrive\Desktop\ASTTEST\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\yuzan\OneDrive\Desktop\ASTTEST
+configfile: pytest.ini
+collecting ... collected 1 item
+
+ai_review/test_ai_generated.py::test_cart_total_sums_items PASSED        [100%]
+
+============================== 1 passed in 0.02s ==============================
 ```
 
 **4. What that pair proves.** FAIL then PASS is the "Genuine detection" row. On the shipped code the assertion failed with `assert 10 == 30`, and after our fix to the cart total it passed. The test caught a real defect (Bug 2 in FINDINGS.md).
@@ -90,7 +123,16 @@ Command: `python -m pytest ai_review/test_ai_generated.py::test_cart_total_sums_
 Command: `python -m pytest ai_review/test_ai_generated.py::test_login_rejects_wrong_password -v`
 
 ```text
-<PASTE BLOCK from shipped_each.txt>
+= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\yuzan\OneDrive\Desktop\ASTTEST\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\yuzan\OneDrive\Desktop\ASTTEST_original
+configfile: pytest.ini
+collecting ... collected 1 item
+
+ai_review/test_ai_generated.py::test_login_rejects_wrong_password PASSED [100%]
+
+============================== 1 passed in 0.02s ==============================
 ```
 
 **3. Evidence — against our fixed code**
@@ -98,7 +140,16 @@ Command: `python -m pytest ai_review/test_ai_generated.py::test_login_rejects_wr
 Command: `python -m pytest ai_review/test_ai_generated.py::test_login_rejects_wrong_password -v`
 
 ```text
-<PASTE BLOCK from fixed_each.txt>
+= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\yuzan\OneDrive\Desktop\ASTTEST\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\yuzan\OneDrive\Desktop\ASTTEST
+configfile: pytest.ini
+collecting ... collected 1 item
+
+ai_review/test_ai_generated.py::test_login_rejects_wrong_password PASSED [100%]
+
+============================== 1 passed in 0.02s ==============================
 ```
 
 **4. What that pair proves.** PASS then PASS is the "Detects nothing" row. The test uses the wrong password "wrongpw", which contains only letters. Our Bug 1 in `login` only appears when the password contains symbols or spaces, so the buggy code rejects this input correctly too. To catch the bug, the test would have to log in with a symbol password such as "P@ss word!" and assert True.
@@ -123,7 +174,16 @@ Command: `python -m pytest ai_review/test_ai_generated.py::test_login_rejects_wr
 Command: `python -m pytest ai_review/test_ai_generated.py::test_search_finds_exact_title -v`
 
 ```text
-<PASTE BLOCK from shipped_each.txt>
+= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\yuzan\OneDrive\Desktop\ASTTEST\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\yuzan\OneDrive\Desktop\ASTTEST_original
+configfile: pytest.ini
+collecting ... collected 1 item
+
+ai_review/test_ai_generated.py::test_search_finds_exact_title PASSED     [100%]
+
+============================== 1 passed in 0.02s ==============================
 ```
 
 **3. Evidence — against our fixed code**
@@ -131,7 +191,16 @@ Command: `python -m pytest ai_review/test_ai_generated.py::test_search_finds_exa
 Command: `python -m pytest ai_review/test_ai_generated.py::test_search_finds_exact_title -v`
 
 ```text
-<PASTE BLOCK from fixed_each.txt>
+= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\yuzan\OneDrive\Desktop\ASTTEST\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\yuzan\OneDrive\Desktop\ASTTEST
+configfile: pytest.ini
+collecting ... collected 1 item
+
+ai_review/test_ai_generated.py::test_search_finds_exact_title PASSED     [100%]
+
+============================== 1 passed in 0.03s ==============================
 ```
 
 **4. What that pair proves.** PASS then PASS is the "Detects nothing" row. The test searches with the exact title in identical capitalisation, which almost any version of `search` handles correctly. It never exercises the cases where a search can go wrong, such as a keyword in a different case or a partial keyword, so it gives false confidence.
@@ -156,7 +225,30 @@ Command: `python -m pytest ai_review/test_ai_generated.py::test_search_finds_exa
 Command: `python -m pytest ai_review/test_ai_generated.py::test_import_returns_count -v`
 
 ```text
-<PASTE BLOCK from shipped_each.txt>
+= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\yuzan\OneDrive\Desktop\ASTTEST\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\yuzan\OneDrive\Desktop\ASTTEST_original
+configfile: pytest.ini
+collecting ... collected 1 item
+
+ai_review/test_ai_generated.py::test_import_returns_count FAILED         [100%]
+
+================================== FAILURES ===================================
+__________________________ test_import_returns_count __________________________
+
+    def test_import_returns_count():
+        """Claims to check the bulk-import count."""
+        c = Cart(Catalog())
+>       assert c.import_products([(1, "A", 5), (2, "B", 6)]) == 2
+E       AssertionError: assert 3 == 2
+E        +  where 3 = import_products([(1, 'A', 5), (2, 'B', 6)])
+E        +    where import_products = <bookstore_app.cart.Cart object at 0x0000021E4DBA7B60>.import_products
+
+ai_review\test_ai_generated.py:34: AssertionError
+=========================== short test summary info ===========================
+FAILED ai_review/test_ai_generated.py::test_import_returns_count - AssertionE...
+============================== 1 failed in 0.13s ==============================
 ```
 
 **3. Evidence — against our fixed code**
@@ -164,7 +256,16 @@ Command: `python -m pytest ai_review/test_ai_generated.py::test_import_returns_c
 Command: `python -m pytest ai_review/test_ai_generated.py::test_import_returns_count -v`
 
 ```text
-<PASTE BLOCK from fixed_each.txt>
+= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\yuzan\OneDrive\Desktop\ASTTEST\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\yuzan\OneDrive\Desktop\ASTTEST
+configfile: pytest.ini
+collecting ... collected 1 item
+
+ai_review/test_ai_generated.py::test_import_returns_count PASSED         [100%]
+
+============================== 1 passed in 0.02s ==============================
 ```
 
 **4. What that pair proves.** FAIL then PASS is the "Genuine detection" row. On the shipped code it failed with `assert 3 == 2`, so the returned count was wrong, and it passed after our fix. It caught a real defect (Bug 4 in FINDINGS.md).
@@ -189,7 +290,16 @@ Command: `python -m pytest ai_review/test_ai_generated.py::test_import_returns_c
 Command: `python -m pytest ai_review/test_ai_generated.py::test_register_duplicate_returns_false -v`
 
 ```text
-<PASTE BLOCK from shipped_each.txt>
+= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\yuzan\OneDrive\Desktop\ASTTEST\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\yuzan\OneDrive\Desktop\ASTTEST_original
+configfile: pytest.ini
+collecting ... collected 1 item
+
+ai_review/test_ai_generated.py::test_register_duplicate_returns_false PASSED [100%]
+
+============================== 1 passed in 0.02s ==============================
 ```
 
 **3. Evidence — against our fixed code**
@@ -197,7 +307,16 @@ Command: `python -m pytest ai_review/test_ai_generated.py::test_register_duplica
 Command: `python -m pytest ai_review/test_ai_generated.py::test_register_duplicate_returns_false -v`
 
 ```text
-<PASTE BLOCK from fixed_each.txt>
+= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\yuzan\OneDrive\Desktop\ASTTEST\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\yuzan\OneDrive\Desktop\ASTTEST
+configfile: pytest.ini
+collecting ... collected 1 item
+
+ai_review/test_ai_generated.py::test_register_duplicate_returns_false PASSED [100%]
+
+============================== 1 passed in 0.02s ==============================
 ```
 
 **4. What that pair proves.** PASS then PASS is the "Detects nothing" row. `register` already returned False for a taken username in the shipped code, so that behaviour was never broken. None of our bugs involve duplicate registration, so the test cannot detect any of them.
@@ -222,7 +341,31 @@ Command: `python -m pytest ai_review/test_ai_generated.py::test_register_duplica
 Command: `python -m pytest ai_review/test_ai_generated.py::test_checkout_empty_returns_none -v`
 
 ```text
-<PASTE BLOCK from shipped_each.txt>
+= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\yuzan\OneDrive\Desktop\ASTTEST\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\yuzan\OneDrive\Desktop\ASTTEST_original
+configfile: pytest.ini
+collecting ... collected 1 item
+
+ai_review/test_ai_generated.py::test_checkout_empty_returns_none FAILED  [100%]
+
+================================== FAILURES ===================================
+______________________ test_checkout_empty_returns_none _______________________
+
+    def test_checkout_empty_returns_none():
+        """Claims to check that checking out an empty cart returns None."""
+>       assert Cart(Catalog()).checkout() is None
+E       assert [] is None
+E        +  where [] = checkout()
+E        +    where checkout = <bookstore_app.cart.Cart object at 0x0000015EEF4A7B60>.checkout
+E        +      where <bookstore_app.cart.Cart object at 0x0000015EEF4A7B60> = Cart(<bookstore_app.catalog.Catalog object at 0x0000015EEF4A7380>)
+E        +        where <bookstore_app.catalog.Catalog object at 0x0000015EEF4A7380> = Catalog()
+
+ai_review\test_ai_generated.py:45: AssertionError
+=========================== short test summary info ===========================
+FAILED ai_review/test_ai_generated.py::test_checkout_empty_returns_none - ass...
+============================== 1 failed in 0.12s ==============================
 ```
 
 **3. Evidence — against our fixed code**
@@ -230,7 +373,16 @@ Command: `python -m pytest ai_review/test_ai_generated.py::test_checkout_empty_r
 Command: `python -m pytest ai_review/test_ai_generated.py::test_checkout_empty_returns_none -v`
 
 ```text
-<PASTE BLOCK from fixed_each.txt>
+= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\yuzan\OneDrive\Desktop\ASTTEST\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\yuzan\OneDrive\Desktop\ASTTEST
+configfile: pytest.ini
+collecting ... collected 1 item
+
+ai_review/test_ai_generated.py::test_checkout_empty_returns_none PASSED  [100%]
+
+============================== 1 passed in 0.02s ==============================
 ```
 
 **4. What that pair proves.** FAIL then PASS is the "Genuine detection" row. On the shipped code it failed with `assert [] is None`, because checkout returned an empty list for an empty cart, and it passed after our fix. It caught a real defect (Bug 3 in FINDINGS.md).
@@ -255,7 +407,16 @@ Command: `python -m pytest ai_review/test_ai_generated.py::test_checkout_empty_r
 Command: `python -m pytest ai_review/test_ai_generated.py::test_add_to_cart_returns_true_for_known_product -v`
 
 ```text
-<PASTE BLOCK from shipped_each.txt>
+= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\yuzan\OneDrive\Desktop\ASTTEST\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\yuzan\OneDrive\Desktop\ASTTEST_original
+configfile: pytest.ini
+collecting ... collected 1 item
+
+ai_review/test_ai_generated.py::test_add_to_cart_returns_true_for_known_product PASSED [100%]
+
+============================== 1 passed in 0.02s ==============================
 ```
 
 **3. Evidence — against our fixed code**
@@ -263,7 +424,16 @@ Command: `python -m pytest ai_review/test_ai_generated.py::test_add_to_cart_retu
 Command: `python -m pytest ai_review/test_ai_generated.py::test_add_to_cart_returns_true_for_known_product -v`
 
 ```text
-<PASTE BLOCK from fixed_each.txt>
+= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\yuzan\OneDrive\Desktop\ASTTEST\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\yuzan\OneDrive\Desktop\ASTTEST
+configfile: pytest.ini
+collecting ... collected 1 item
+
+ai_review/test_ai_generated.py::test_add_to_cart_returns_true_for_known_product PASSED [100%]
+
+============================== 1 passed in 0.02s ==============================
 ```
 
 **4. What that pair proves.** PASS then PASS is the "Detects nothing" row. `add` already returned True for a known product in the shipped code. The test only checks the return value, so it would also pass if the item never reached the cart. To be useful it would also have to assert that the cart contains the product afterwards.
@@ -288,7 +458,33 @@ Command: `python -m pytest ai_review/test_ai_generated.py::test_add_to_cart_retu
 Command: `python -m pytest ai_review/test_ai_generated.py::test_search_is_limited_to_ten_results -v`
 
 ```text
-<PASTE BLOCK from shipped_each.txt>
+= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\yuzan\OneDrive\Desktop\ASTTEST\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\yuzan\OneDrive\Desktop\ASTTEST_original
+configfile: pytest.ini
+collecting ... collected 1 item
+
+ai_review/test_ai_generated.py::test_search_is_limited_to_ten_results FAILED [100%]
+
+================================== FAILURES ===================================
+____________________ test_search_is_limited_to_ten_results ____________________
+
+    def test_search_is_limited_to_ten_results():
+        """Claims the catalogue search returns at most ten results."""
+        cat = Catalog()
+        for i in range(20):
+            cat.add_product(i, "match", 1)
+>       assert len(cat.search("match")) <= 10
+E       AssertionError: assert 20 <= 10
+E        +  where 20 = len([0, 1, 2, 3, 4, 5, ...])
+E        +    where [0, 1, 2, 3, 4, 5, ...] = search('match')
+E        +      where search = <bookstore_app.catalog.Catalog object at 0x000001D806E17380>.search
+
+ai_review\test_ai_generated.py:60: AssertionError
+=========================== short test summary info ===========================
+FAILED ai_review/test_ai_generated.py::test_search_is_limited_to_ten_results
+============================== 1 failed in 0.13s ==============================
 ```
 
 **3. Evidence — against our fixed code**
@@ -296,7 +492,33 @@ Command: `python -m pytest ai_review/test_ai_generated.py::test_search_is_limite
 Command: `python -m pytest ai_review/test_ai_generated.py::test_search_is_limited_to_ten_results -v`
 
 ```text
-<PASTE BLOCK from fixed_each.txt>
+= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\yuzan\OneDrive\Desktop\ASTTEST\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\yuzan\OneDrive\Desktop\ASTTEST
+configfile: pytest.ini
+collecting ... collected 1 item
+
+ai_review/test_ai_generated.py::test_search_is_limited_to_ten_results FAILED [100%]
+
+================================== FAILURES ===================================
+____________________ test_search_is_limited_to_ten_results ____________________
+
+    def test_search_is_limited_to_ten_results():
+        """Claims the catalogue search returns at most ten results."""
+        cat = Catalog()
+        for i in range(20):
+            cat.add_product(i, "match", 1)
+>       assert len(cat.search("match")) <= 10
+E       AssertionError: assert 20 <= 10
+E        +  where 20 = len([0, 1, 2, 3, 4, 5, ...])
+E        +    where [0, 1, 2, 3, 4, 5, ...] = search('match')
+E        +      where search = <bookstore_app.catalog.Catalog object at 0x000002BA0C8C3380>.search
+
+ai_review\test_ai_generated.py:60: AssertionError
+=========================== short test summary info ===========================
+FAILED ai_review/test_ai_generated.py::test_search_is_limited_to_ten_results
+============================== 1 failed in 0.13s ==============================
 ```
 
 **4. What that pair proves.** FAIL then FAIL is the "Invented requirement" row. The test failed with `assert 20 <= 10` on both runs, so it is not tied to any bug we fixed. We established that the requirement does not exist by reading `search()` in `catalog.py`: its docstring says it returns the product_ids whose title contains the keyword, and neither the docstring nor the code mentions any limit of ten results.
