@@ -15,7 +15,7 @@ from bookstore_app import Users, Catalog, Cart
 
 @pytest.mark.smoke
 def test_example_register():
-    """Author: <example>. Smoke: a new user can register."""
+    """Author: Paing. Smoke: a new user can register."""
     assert Users().register("newuser", "password123") is True
 
 
