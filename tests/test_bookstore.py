@@ -67,7 +67,22 @@ def test_checkout_returns_order():
     order = cart.checkout()
     assert order is not None
     assert 1 in order
-    
+
 # ---- YOUR REGRESSION TESTS (the bug hunt) ----
 
+@pytest.mark.regression
+def test_login_with_symbol_password():
+    """Author: Paing. Regression: Users.login() strips non-alphanumeric
+    characters from the typed password before comparing it. Observed:
+    register("bob", "P@ss word!") then login("bob", "P@ss word!") returns
+    False, and login("alice", "secret1!!!") is accepted when the stored
+    password is "secret1". Expected: login compares the password exactly
+    as typed, so the first returns True and the second returns False."""
+    u = Users()
+    u.register("bob", "P@ss word!")
+    assert u.login("bob", "P@ss word!") is True
+
+    u.register("alice", "secret1")
+    assert u.login("alice", "secret1!!!") is False
+    
 # ---- YOUR SLOW TESTS (at least 2) ----
