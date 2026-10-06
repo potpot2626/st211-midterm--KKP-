@@ -42,3 +42,15 @@ Members: <Paing>
 - **What we expected instead:** `checkout()` returns None for an empty cart and `history()` stays `[]`, as the docstring says.
 - **The fix we made:** Added `if not self.items: return None` at the top of checkout(), before any order is appended.
 - **Author of this finding:** Paing
+
+---
+
+## Bug 4
+
+- **Module / function:** cart.py -> import_products()
+- **What we suspected and why:** The docstring says it returns how many products were imported, but the last line is `return count + 1`, which looks one too high.
+- **What we did:** Created a Cart with an empty Catalog and imported two products, (1, "A", 5) and (2, "B", 6).
+- **What we observed (the wrong result):** `cart.import_products([(1, "A", 5), (2, "B", 6)])` returned 3. Test output: `assert 3 == 2`.
+- **What we expected instead:** 2, the number of products imported.
+- **The fix we made:** Changed `return count + 1` to `return count`.
+- **Author of this finding:** Paing
