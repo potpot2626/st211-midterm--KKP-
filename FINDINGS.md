@@ -43,3 +43,13 @@ Each bug below was reproduced with a regression test that FAILS on a clean copy 
 - **Expected:** it returns how many products were imported, so `2`. The docstring says "Returns how many were imported."
 - **Fixed:** changed the return to `return count`.
 - **Author:** Paing
+
+---
+
+## Bug 5
+- **Suspected:** `Catalog.search()` in `catalog.py`. The docstring says it returns the products whose title contains the keyword, but the check `keyword in info["title"]` compares exact capitalisation.
+- **Tried:** two products, `add_product(1, "Python Book", 10)` and `add_product(2, "python basics", 5)`, then `search("Python")`, `search("python")` and `search("book")`.
+- **Observed:** `search("Python")` returned `[1]`, `search("python")` returned `[2]`, and `search("book")` returned `[]` although "Python Book" contains the word book. The result depends on letter case.
+- **Expected:** `search` returns every product whose title contains the keyword regardless of upper or lower case, so `search("book")` returns `[1]` and `search("python")` returns `[1, 2]`. A bookstore customer typing a lowercase word must still find the book.
+- **Fixed:** compared the lowercase versions: `if keyword.lower() in info["title"].lower():`.
+- **Author:** Paing
