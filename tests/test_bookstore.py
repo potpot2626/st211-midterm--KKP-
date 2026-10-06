@@ -105,5 +105,25 @@ def test_cart_total_includes_last_item():
     single = Cart(cat)
     single.add(1)
     assert single.total() == 10
+@pytest.mark.regression
+def test_cart_total_includes_last_item():
+    """Author: Paing. Regression: Cart.total() skips the last item because
+    the loop uses range(len(self.items) - 1). Observed: with items priced
+    10, 20 and 30 in the cart, total() returned 30 (the first two items
+    only). Expected: total() returns the sum of every item, so 60 here,
+    and 10 for a cart holding one item priced 10."""
+    cat = Catalog()
+    cat.add_product(1, "A", 10)
+    cat.add_product(2, "B", 20)
+    cat.add_product(3, "C", 30)
+    cart = Cart(cat)
+    cart.add(1)
+    cart.add(2)
+    cart.add(3)
+    assert cart.total() == 60
 
+    single = Cart(cat)
+    single.add(1)
+    assert single.total() == 10
+    
 # ---- YOUR SLOW TESTS (at least 2) ----
