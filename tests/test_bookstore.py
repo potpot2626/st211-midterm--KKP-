@@ -118,4 +118,15 @@ def test_checkout_empty_cart_returns_none():
     assert cart.checkout() is None
     assert cart.history() == []
 
+@pytest.mark.regression
+def test_import_products_returns_correct_count():
+    """Author: Paing. Regression: Cart.import_products() returns one more
+    than the number of products imported. Observed: importing 2 products
+    returned 3. Expected: it returns how many were imported, so 2, and
+    both products are in the catalog."""
+    cart = Cart(Catalog())
+    count = cart.import_products([(1, "A", 5), (2, "B", 6)])
+    assert count == 2
+    assert len(cart.catalog.products) == 2
+    
 # ---- YOUR SLOW TESTS (at least 2) ----
