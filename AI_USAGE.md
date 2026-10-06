@@ -1,6 +1,6 @@
 # AI Usage Declaration and Audit
 
-**Group:** KKP  **Members:** Paing, [OTHER MEMBERS]
+**Group:** KKP  **Members:** Paing
 
 **Part D3 of the midterm — 20 marks.**
 
@@ -9,7 +9,7 @@ Checklist:
 - [x] Part 1 declaration complete
 - [x] All eight tests appear in the summary table with a verdict
 - [x] All eight have two pasted evidence runs (shipped code, and our fixed code)
-- [ ] Part 3 coverage table filled in against `FINDINGS.md`
+- [x] Part 3 coverage table filled in against `FINDINGS.md`
 - [x] Part 4 verdict written, under 400 words
 - [x] Every audit entry names the member who did it
 - [x] No claim made that we cannot demonstrate from pasted output
@@ -21,8 +21,7 @@ Checklist:
 
 | Tool | What we used it for | Where in the project | How we checked it before relying on it |
 |---|---|---|---|
-| Claude (Anthropic) | Step-by-step guidance on the project, explaining the audit method, interpreting pytest output, and drafting the wording of the audit entries | Whole project, mainly `AI_USAGE.md` and the `ai_review/` audit | Ran every audit test ourselves against both the shipped and the fixed code, pasted the real pytest output, and compared each result with the function docstrings before accepting any verdict |
-| [OTHER TOOL, if any member used one] | | | |
+| Claude (Anthropic) | Step-by-step guidance on the project; explaining the audit method; interpreting pytest output; drafting the wording of AI_USAGE.md, FINDINGS.md, REPORT.md and the CI workflow `tests.yml` | `AI_USAGE.md`, `FINDINGS.md`, `REPORT.md`, `.github/workflows/tests.yml`, and the `ai_review/` audit | Guidance was used as a starting point. Every verdict and every claim about test results was checked against our own pytest output (both runs pasted above). Regression tests were run against a clean copy of the shipped code and all failed there before we relied on them. |
 
 Note: `ai_review/test_ai_suggested.py` is named `ai_review/test_ai_generated.py` in our repository. All commands and entries below use the real filename.
 
@@ -319,7 +318,6 @@ Command: `python -m pytest ai_review/test_ai_generated.py::test_search_is_limite
 | Bug 2: cart total wrong | Yes | Yes | Test #1: FAIL (`assert 10 == 30`) on shipped, PASS on fixed |
 | Bug 3: checkout of an empty cart returns [] instead of None | Yes | Yes | Test #6: FAIL (`assert [] is None`) on shipped, PASS on fixed |
 | Bug 4: import returns the wrong count | Yes | Yes | Test #4: FAIL (`assert 3 == 2`) on shipped, PASS on fixed |
-| [Bug 5 from FINDINGS.md, if you have one] | [Yes] | [Yes/No] | [which test, or "no genuine test touches it"] |
 
 ---
 
