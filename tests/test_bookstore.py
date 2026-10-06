@@ -128,5 +128,33 @@ def test_import_products_returns_correct_count():
     count = cart.import_products([(1, "A", 5), (2, "B", 6)])
     assert count == 2
     assert len(cart.catalog.products) == 2
-    
+
 # ---- YOUR SLOW TESTS (at least 2) ----
+
+@pytest.mark.slow
+def test_bulk_import_one_million_products():
+    """Author: Paing. Slow: bulk-importing 1,000,000 products stores every
+    one of them in the catalog."""
+    # Slow because import_products() loops 1,000,000 times and calls
+    # time.sleep(0) on every iteration.
+    cart = Cart(Catalog())
+    products = [(i, f"Book {i}", 10) for i in range(1000000)]
+    cart.import_products(products)
+    assert len(cart.catalog.products) == 1000000
+    assert cart.catalog.products[999999]["title"] == "Book 999999"
+
+
+@pytest.mark.slow
+def test_large_cart_checkout():
+    """Author: Paing. Slow: a cart holding 500,000 items checks out as one
+    order and is emptied afterwards."""
+    # Slow because it first imports 500,000 products (one loop iteration and
+    # time.sleep(0) each), then adds all 500,000 to the cart one by one.
+    cart = Cart(Catalog())
+    cart.import_products([(i, "Book", 2) for i in range(500000)])
+    for i in range(500000):
+        cart.add(i)
+    order = cart.checkout()
+    assert len(order) == 500000
+    assert cart.items == []
+    assert len(cart.history()) == 1
