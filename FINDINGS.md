@@ -23,13 +23,13 @@ Members: <Paing>
 
 ## Bug 2
 
-- **Module / function:**
-- **What we suspected and why:**
-- **What we did:**
-- **What we observed (the wrong result):**
-- **What we expected instead:**
-- **The fix we made:**
-- **Author of this finding:**
+- **Module / function:** cart.py -> total()
+- **What we suspected and why:** The loop is `for i in range(len(self.items) - 1)`, which looks like it stops one item early. The docstring says total() is the price of everything in the cart.
+- **What we did:** Added products priced 10, 20 and 30 to a catalog, added all three to a cart, and called total(). Then wrote a regression test.
+- **What we observed (the wrong result):** `cart.total()` returned 30, which is only the first two items (10 + 20). Test output: `assert 30 == 60`.
+- **What we expected instead:** 60, the sum of all three items.
+- **The fix we made:** Changed the loop to `range(len(self.items))` so every item is included.
+- **Author of this finding:** Paing
 
 ---
 
