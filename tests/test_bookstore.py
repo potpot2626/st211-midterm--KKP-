@@ -29,7 +29,45 @@ def test_login_accepts_correct_and_rejects_wrong():
     assert u.login("alice", "password123") is True
     assert u.login("alice", "wrongpass") is False
 
+@pytest.mark.smoke
+def test_register_then_login():
+    """Author: Paing. Smoke: a registered user is saved and can log in."""
+    u = Users()
+    assert u.register("bob", "password123") is True
+    assert u.login("bob", "password123") is True
 
+
+@pytest.mark.smoke
+def test_add_product_is_saved():
+    """Author: Paing. Smoke: an added product is stored in the catalog."""
+    cat = Catalog()
+    cat.add_product(1, "Python Book", 20)
+    assert 1 in cat.products
+    assert cat.products[1]["title"] == "Python Book"
+    assert cat.products[1]["price"] == 20
+
+
+@pytest.mark.smoke
+def test_add_to_cart():
+    """Author: Paing. Smoke: a product can be added to the cart."""
+    cat = Catalog()
+    cat.add_product(1, "Python Book", 20)
+    cart = Cart(cat)
+    assert cart.add(1) is True
+    assert 1 in cart.items
+
+
+@pytest.mark.smoke
+def test_checkout_returns_order():
+    """Author: Paing. Smoke: checkout of a non-empty cart returns the order."""
+    cat = Catalog()
+    cat.add_product(1, "Python Book", 20)
+    cart = Cart(cat)
+    cart.add(1)
+    order = cart.checkout()
+    assert order is not None
+    assert 1 in order
+    
 # ---- YOUR REGRESSION TESTS (the bug hunt) ----
 
 # ---- YOUR SLOW TESTS (at least 2) ----
