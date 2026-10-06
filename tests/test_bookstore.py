@@ -129,6 +129,18 @@ def test_import_products_returns_correct_count():
     assert count == 2
     assert len(cart.catalog.products) == 2
 
+@pytest.mark.regression
+def test_search_ignores_letter_case():
+    """Author: Paing. Regression: Catalog.search() is case-sensitive.
+    Observed: with a product titled "Python Book", search("book") returned []
+    and search("python") did not find it. Expected: search returns every
+    product whose title contains the keyword regardless of upper or lower
+    case, so both calls return [1]."""
+    cat = Catalog()
+    cat.add_product(1, "Python Book", 10)
+    assert cat.search("book") == [1]
+    assert cat.search("python") == [1]
+
 # ---- YOUR SLOW TESTS (at least 2) ----
 
 @pytest.mark.slow
