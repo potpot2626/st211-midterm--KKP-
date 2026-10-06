@@ -203,7 +203,7 @@ ai_review/test_ai_generated.py::test_search_finds_exact_title PASSED     [100%]
 ============================== 1 passed in 0.03s ==============================
 ```
 
-**4. What that pair proves.** PASS then PASS is the "Detects nothing" row. The test searches with the exact title in identical capitalisation, which almost any version of `search` handles correctly. It never exercises the cases where a search can go wrong, such as a keyword in a different case or a partial keyword, so it gives false confidence.
+**4. What that pair proves.** PASS then PASS is the "Detects nothing" row. The test searches with the exact title in identical capitalisation, which almost any version of `search` handles correctly. It never exercises the cases where a search can go wrong, such as a keyword in a different case (our Bug 5, which this test would have caught if it searched for "book" in a title "Python Book") or a partial keyword, so it gives false confidence.
 
 **5. Verdict**
 
@@ -540,6 +540,7 @@ FAILED ai_review/test_ai_generated.py::test_search_is_limited_to_ten_results
 | Bug 2: cart total wrong | Yes | Yes | Test #1: FAIL (`assert 10 == 30`) on shipped, PASS on fixed |
 | Bug 3: checkout of an empty cart returns [] instead of None | Yes | Yes | Test #6: FAIL (`assert [] is None`) on shipped, PASS on fixed |
 | Bug 4: import returns the wrong count | Yes | Yes | Test #4: FAIL (`assert 3 == 2`) on shipped, PASS on fixed |
+| Bug 5: search is case-sensitive, so search("book") does not find "Python Book" | Yes | No | Test #3 searches with the exact-case title, so it passes on both runs (PASS then PASS) |
 
 ---
 
