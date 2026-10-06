@@ -107,4 +107,15 @@ def test_cart_total_includes_last_item():
     single.add(1)
     assert single.total() == 10
 
+@pytest.mark.regression
+def test_checkout_empty_cart_returns_none():
+    """Author: Paing. Regression: Cart.checkout() does not handle an empty
+    cart. Observed: checkout() on an empty cart returned [] and
+    history() then returned [[]], so an empty order was recorded.
+    Expected: checkout() returns None for an empty cart, and no order is
+    added to the history."""
+    cart = Cart(Catalog())
+    assert cart.checkout() is None
+    assert cart.history() == []
+
 # ---- YOUR SLOW TESTS (at least 2) ----
