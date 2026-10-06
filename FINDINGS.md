@@ -1,56 +1,45 @@
-# Bug-Hunt Findings Log
+# FINDINGS.md -- Bug-hunt log
 
-Fill in one entry per bug you find, AS YOU FIND IT (before doing the AI
-comparison). Write in your own words, like a detective's notebook. Show the real
-path -- including things you tried that did not work.
+Group: KKP   Members: Paing
 
-Group: <KKP>
-Members: <Paing>
+Each bug below was reproduced with a regression test that FAILS on a clean copy of the shipped code and PASSES after the fix.
 
 ---
 
 ## Bug 1
-
-- **Module / function:** users.py -> login()
-- **What we suspected and why:** login() strips every non-alphanumeric character from the typed password (`cleaned`), but register() stores the password exactly as typed. The two sides are treated differently, so a password with a symbol or space can never match.
-- **What we did:** In the Python shell, registered "bob" with "P@ss word!" and then logged in with the same password. Checked that a letters-and-digits password ("dave", "abc123") worked. Then wrote a regression test.
-- **What we observed (the wrong result):** `login("bob", "P@ss word!")` returned False. The test output was `AssertionError: assert False is True` at `assert u.login("bob", "P@ss word!") is True`. It also works the wrong way round: logging in as "alice" (stored "secret1") with "secret1!!!" is accepted.
-- **What we expected instead:** `login("bob", "P@ss word!")` returns True, and `login("alice", "secret1!!!")` returns False. The docstring says login returns True if the password matches, so the typed password must be compared exactly as it was registered.
-- **The fix we made:** - Removed the `cleaned = ...` line and changed the comparison to `stored == password`, so login compares the password exactly as typed. register() is unchanged.
-- **Author of this finding:** Paing
+- **Suspected:** `Users.login()` in `users.py`. The docstring says it returns True if the password matches, but the code builds a `cleaned` version of the typed password with only letters and digits and compares that instead.
+- **Tried:** `u.register("bob", "P@ss word!")` then `u.login("bob", "P@ss word!")`. Also `login("alice", "secret1!!!")` when the stored password is `"secret1"`.
+- **Observed:** `login("bob", "P@ss word!")` returned `False`. `login("alice", "secret1!!!")` was accepted although the stored password is `"secret1"` (`assert False is True` in the regression test).
+- **Expected:** `login` compares the password exactly as typed. The first call returns `True` and the second returns `False`, because the docstring says the password must match.
+- **Fixed:** removed the `cleaned` step and compared `stored == password`.
+- **Author:** Paing
 
 ---
 
 ## Bug 2
-
-- **Module / function:** cart.py -> total()
-- **What we suspected and why:** The loop is `for i in range(len(self.items) - 1)`, which looks like it stops one item early. The docstring says total() is the price of everything in the cart.
-- **What we did:** Added products priced 10, 20 and 30 to a catalog, added all three to a cart, and called total(). Then wrote a regression test.
-- **What we observed (the wrong result):** `cart.total()` returned 30, which is only the first two items (10 + 20). Test output: `assert 30 == 60`.
-- **What we expected instead:** 60, the sum of all three items.
-- **The fix we made:** Changed the loop to `range(len(self.items))` so every item is included.
-- **Author of this finding:** Paing
+- **Suspected:** `Cart.total()` in `cart.py`. The loop is `range(len(self.items) - 1)`, which looks like an off-by-one that stops before the last item.
+- **Tried:** a catalog with products priced 10, 20 and 30, all three added to the cart. Also a cart of 300,000 items priced 2.
+- **Observed:** `total()` returned `30`, should be `60` (the last item is skipped). With 300,000 items it returned `599998`, should be `600000`.
+- **Expected:** `total()` returns the sum of every item currently in the cart, as its docstring says ("Total price of everything currently in the cart").
+- **Fixed:** the loop now runs over every item (`range(len(self.items))`).
+- **Author:** Paing
 
 ---
 
 ## Bug 3
-
-- **Module / function:** cart.py -> checkout()
-- **What we suspected and why:** The docstring says checkout returns None if the cart is empty, but the code never checks for an empty cart before building and saving the order.
-- **What we did:** Created a Cart with an empty Catalog, called checkout(), then called history().
-- **What we observed (the wrong result):** `cart.checkout()` returned `[]` and `cart.history()` returned `[[]]`, so an empty order was recorded.
-- **What we expected instead:** `checkout()` returns None for an empty cart and `history()` stays `[]`, as the docstring says.
-- **The fix we made:** Added `if not self.items: return None` at the top of checkout(), before any order is appended.
-- **Author of this finding:** Paing
+- **Suspected:** `Cart.checkout()` in `cart.py`. The docstring says it returns None if the cart is empty, but the code has no empty-cart check at all.
+- **Tried:** `Cart(Catalog()).checkout()` on a cart with nothing in it, then `history()`.
+- **Observed:** `checkout()` returned `[]` (`assert [] is None`), and `history()` then returned `[[]]`, so an empty order was recorded.
+- **Expected:** `checkout()` returns `None` for an empty cart and no order is added to the history, because the docstring says so.
+- **Fixed:** added an early `return None` when `self.items` is empty, before the order is appended.
+- **Author:** Paing
 
 ---
 
 ## Bug 4
-
-- **Module / function:** cart.py -> import_products()
-- **What we suspected and why:** The docstring says it returns how many products were imported, but the last line is `return count + 1`, which looks one too high.
-- **What we did:** Created a Cart with an empty Catalog and imported two products, (1, "A", 5) and (2, "B", 6).
-- **What we observed (the wrong result):** `cart.import_products([(1, "A", 5), (2, "B", 6)])` returned 3. Test output: `assert 3 == 2`.
-- **What we expected instead:** 2, the number of products imported.
-- **The fix we made:** Changed `return count + 1` to `return count`.
-- **Author of this finding:** Paing
+- **Suspected:** `Cart.import_products()` in `cart.py`. The function counts imported products in `count`, but the last line is `return count + 1`.
+- **Tried:** `cart.import_products([(1, "A", 5), (2, "B", 6)])`.
+- **Observed:** it returned `3` (`assert 3 == 2`).
+- **Expected:** it returns how many products were imported, so `2`. The docstring says "Returns how many were imported."
+- **Fixed:** changed the return to `return count`.
+- **Author:** Paing
