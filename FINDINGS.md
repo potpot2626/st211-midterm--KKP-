@@ -35,4 +35,10 @@ Members: <Paing>
 
 ## Bug 3
 
-(copy the block above for each additional bug you find)
+- **Module / function:** cart.py -> checkout()
+- **What we suspected and why:** The docstring says checkout returns None if the cart is empty, but the code never checks for an empty cart before building and saving the order.
+- **What we did:** Created a Cart with an empty Catalog, called checkout(), then called history().
+- **What we observed (the wrong result):** `cart.checkout()` returned `[]` and `cart.history()` returned `[[]]`, so an empty order was recorded.
+- **What we expected instead:** `checkout()` returns None for an empty cart and `history()` stays `[]`, as the docstring says.
+- **The fix we made:** Added `if not self.items: return None` at the top of checkout(), before any order is appended.
+- **Author of this finding:** Paing
