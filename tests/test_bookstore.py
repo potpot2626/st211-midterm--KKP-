@@ -158,3 +158,18 @@ def test_large_cart_checkout():
     assert len(order) == 500000
     assert cart.items == []
     assert len(cart.history()) == 1
+
+@pytest.mark.regression
+@pytest.mark.slow
+def test_large_order_total_includes_every_item():
+    """Author: Paing. Regression + slow: with 300,000 items in the cart,
+    total() must count every item. On the original code total() skipped the
+    last item, so it returned 599998 instead of 600000."""
+    # Slow because it imports 300,000 products (one loop iteration and
+    # time.sleep(0) each), adds all of them to the cart one by one, and
+    # then totals 300,000 items.
+    cart = Cart(Catalog())
+    cart.import_products([(i, "Book", 2) for i in range(300000)])
+    for i in range(300000):
+        cart.add(i)
+    assert cart.total() == 600000
