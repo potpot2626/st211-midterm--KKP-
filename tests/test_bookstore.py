@@ -21,6 +21,15 @@ def test_example_register():
 
 # ---- YOUR SMOKE TESTS (at least 5) ----
 
+@pytest.mark.smoke
+def test_login_accepts_correct_and_rejects_wrong():
+    """Author: Paing. Smoke: login works for the right password only."""
+    u = Users()
+    u.register("alice", "password123")
+    assert u.login("alice", "password123") is True
+    assert u.login("alice", "wrongpass") is False
+
+
 # ---- YOUR REGRESSION TESTS (the bug hunt) ----
 
 # ---- YOUR SLOW TESTS (at least 2) ----
